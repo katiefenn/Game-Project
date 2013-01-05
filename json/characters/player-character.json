@@ -6,6 +6,7 @@
             "groups": ["characters", "player-character"],
             "imagePath": "img/player-character.png",
             "animation": "down",
+            "layer": "foreground",
             "animations": 
             {
                 "up": [

@@ -22,17 +22,19 @@ Keyboard.prototype.listen = function (keys) {
     });
 
     setInterval(function () {
+        stats.begin();
         if (This.keyBuffer.length > 0) {
             This.notify();
-            This.keyBuffer = [];
+            This.keyBuffer.length = 0;
         }
+        stats.end();
     }, 1000 / 30);
 };
 
 Keyboard.prototype.handleKeyEvent = function (event) {
-    var matchingkeyMappings = [];
+    var keyMapping = {};
 
-    for (var keyMapping in this.keyMappings) {
+    for (keyMapping in this.keyMappings) {
         if (this.keyMappings[keyMapping].indexOf(event.keyCode) != -1) {
             if (this.keyBuffer.indexOf(keyMapping) == -1) {
                 this.keyBuffer.push(keyMapping);

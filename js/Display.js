@@ -7,6 +7,7 @@ function Display () {
     this.sprites = {};
     this.foreGround = new Kinetic.Layer();
     this.backGround = new Kinetic.Layer();
+    this.clipLayer = new Kinetic.Layer();
 }
 
 Display.prototype.displayScene = function (scene) {
@@ -52,12 +53,12 @@ Display.prototype.getSprite = function (spriteName) {
 Display.prototype.addSprite = function (spriteConfig) {
     var sprite = new Kinetic.Sprite(spriteConfig);    
 
-    if (spriteConfig.imagePath == 'img/player-character.png') {
-        this.foreGround.add(sprite);
-    } else {
+    if (spriteConfig.layer == 'foreground') {
+        this.foreGround.add(sprite);        
+    } else if (spriteConfig.layer == 'background') {
         this.backGround.add(sprite);
     }
-
+    
     sprite.start();
     this.sprites[spriteConfig.name] = sprite;
 }
@@ -65,6 +66,8 @@ Display.prototype.addSprite = function (spriteConfig) {
 Display.prototype.startScene = function () {
     this.stage.add(this.backGround);
     this.stage.add(this.foreGround);
+    this.stage.add(this.clipLayer);
+    this.onReady();
 };
 
 Display.prototype.addClipMap = function (clipConfig) {
@@ -75,13 +78,13 @@ Display.prototype.addClipMap = function (clipConfig) {
             //fill: 'red',
             alpha: 0.5
         });
-        this.foreGround.add(polygon);
+        this.clipLayer.add(polygon);
     }
 }
 
 Display.prototype.getIntersectionNames = function (point) {
     var intersectionNames = [],
-        intersections = this.stage.getIntersections(point);
+        intersections = this.clipLayer.getIntersections(point);
 
     for (var index = 0, length = intersections.length; index < length; index++) {
         var intersectionName = intersections[index].getName();
@@ -91,4 +94,8 @@ Display.prototype.getIntersectionNames = function (point) {
     }
 
     return intersectionNames;
+}
+
+Display.prototype.onReady = function (callback) {
+    this.onReady = callback;
 }

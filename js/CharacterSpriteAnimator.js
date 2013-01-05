@@ -1,13 +1,20 @@
 function CharacterSpriteAnimator(spriteName, display) {
+    var This = this;
     this.spriteName = spriteName;
     this.display = display;
     this.frameKey = 0;
+    this.display.onReady(function () {
+        This.sprite = This.display.getSprite(This.spriteName);
+        This.x = This.sprite.getX();
+        This.y = This.sprite.getY();
+    });
+}
+
+CharacterSpriteAnimator.prototype.getSprite = function () {
+    return this.display.getSprite(this.spriteName);
 }
 
 CharacterSpriteAnimator.prototype.walk = function (direction) {
-    stats.begin();
-        
-    var sprite = this.display.getSprite(this.spriteName);
     switch(direction) {
         case 'left': this.walkLeft();
             break;
@@ -24,94 +31,81 @@ CharacterSpriteAnimator.prototype.walk = function (direction) {
     if(this.frameKey == 9) {
         this.frameKey = 0;
     }
-
-    stats.end();
 }
 
 CharacterSpriteAnimator.prototype.walkLeft = function () {
-    var sprite = this.display.getSprite(this.spriteName),
-        point = {
-            x: sprite.getX() - 10, 
-            y: sprite.getY() + (sprite.getHeight() / 2)
+    var point = {
+            x: this.x - 10, 
+            y: this.y + (this.sprite.getHeight() / 2)
         };
 
     if (this.display.getIntersectionNames(point).indexOf('clip-map') == -1) {
         if(this.frameKey % 2 == 0) {
-            sprite.move(-4, 0);
+            this.sprite.move(-4, 0);
         } else {
-            sprite.move(-2, 0);
+            this.sprite.move(-2, 0);
         }
     }
 
-    if (sprite.getAnimation() != 'left') {
-        sprite.setAnimation('left');
+    if (this.sprite.getAnimation() != 'left') {
+        this.sprite.setAnimation('left');
     }
 }
 
 CharacterSpriteAnimator.prototype.walkUp = function () {
-    var sprite = this.display.getSprite(this.spriteName),
-        point = {
-            x: sprite.getX() + (sprite.getWidth() / 2),
-            y: sprite.getY() - 10
+    var point = {
+            x: this.x + (this.sprite.getWidth() / 2),
+            y: this.y - 10
         };
 
     if (this.display.getIntersectionNames(point).indexOf('clip-map') == -1) {
         if(this.frameKey % 2 == 0) {
-            sprite.move(0, -4);
+            this.sprite.move(0, -4);
         } else {
-            sprite.move(0, -2);
+            this.sprite.move(0, -2);
         }
     }
 
-    if (sprite.getAnimation() != 'up') {
-        sprite.setAnimation('up');
+    if (this.sprite.getAnimation() != 'up') {
+        this.sprite.setAnimation('up');
     }
 }
 
 CharacterSpriteAnimator.prototype.walkRight = function () {
-    var sprite = this.display.getSprite(this.spriteName),
-        transition = {x: sprite.getX() + 10, duration: 0.05},
-        point = {
-            x: sprite.getX() + sprite.getWidth() + 10, 
-            y: sprite.getY() + (sprite.getHeight() / 2)
+    var point = {
+            x: this.x + this.sprite.getWidth() + 10, 
+            y: this.y + (this.sprite.getHeight() / 2)
         };
 
     if (this.display.getIntersectionNames(point).indexOf('clip-map') == -1) {
         if(this.frameKey % 2 == 0) {
-            sprite.move(4, 0);
+            this.sprite.move(4, 0);
         } else {
-            sprite.move(2, 0);
+            this.sprite.move(2, 0);
         }
     }
 
-    if (sprite.getAnimation() != 'right') {
-        sprite.setAnimation('right');
+    if (this.sprite.getAnimation() != 'right') {
+        this.sprite.setAnimation('right');
     }
 }
 
 CharacterSpriteAnimator.prototype.walkDown = function () {
-    var sprite = this.display.getSprite(this.spriteName),
-        transition = {y: sprite.getY() + 10, duration: 0.08},
-        point = {
-            x: sprite.getX() + (sprite.getWidth() / 2),
-            y: sprite.getY() + sprite.getHeight() + 10
+    var point = {
+            x: this.x + (this.sprite.getWidth() / 2),
+            y: this.y + this.sprite.getHeight() + 10
         };
 
     if (this.display.getIntersectionNames(point).indexOf('clip-map') == -1) {
 
         if(this.frameKey % 2 == 0) {
-            sprite.move(0, 4);
+            this.sprite.move(0, 4);
         } else {
-            sprite.move(0, 2);
+            this.sprite.move(0, 2);
         }
     }
 
-    if (sprite.getAnimation() != 'down') {
-        sprite.setAnimation('down');
+    if (this.sprite.getAnimation() != 'down') {
+        this.sprite.setAnimation('down');
     }
-}
-
-CharacterSpriteAnimator.prototype.idle = function (direction) {
-    this.frameKey = 0;
-    sprite.setAnimation(direction);
 }
