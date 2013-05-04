@@ -8,7 +8,7 @@ DemoModule.prototype.run = function () {
         This = this,
         loadChainer = new LoadChainer(),
         resourcesToLoad = [
-            {resources: ['really-slow-locale'], loader: new LocaleConfigLoader()},
+            {resources: ['churchyard'], loader: new LocaleConfigLoader()},
             {resources: ['player-character'], loader: new CharacterConfigLoader()}
         ];
 
