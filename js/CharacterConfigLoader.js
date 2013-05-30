@@ -7,6 +7,10 @@ CharacterConfigLoader.prototype.load = function (characterId, onLoad) {
     jQuery.ajax({
         url: 'json/characters/' + characterId + '.json',
         dataType: 'json',
-        success: this.onLoad
+        success: this.onLoad,
+        error: function (error, textStatus, errorThrown) {
+        	console.log(textStatus);
+        	console.log(errorThrown);
+        }
     });
 }

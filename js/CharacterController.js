@@ -1,6 +1,5 @@
-function CharacterController (scene, characterSpriteAnimator) {
+function CharacterController (scene) {
     this.scene = scene;
-    this.characterSpriteAnimator = characterSpriteAnimator;
 }
 
 CharacterController.prototype.update = function (keys) {
@@ -11,21 +10,21 @@ CharacterController.prototype.update = function (keys) {
     }
 
     if(keys.length == 0) {
-        this.characterSpriteAnimator.idle('left');
+        this.scene.getPlayerCharacter().setState('idle');
     }
 }
 
 CharacterController.prototype.moveCharacterWithKeys = function (keys) {
     if(keys.indexOf('left') != -1) {
-        this.characterSpriteAnimator.walk('left');
+        this.scene.getPlayerCharacter().setState('walk-left');
     }
     else if(keys.indexOf('up') != -1) {
-        this.characterSpriteAnimator.walk('up');
+        this.scene.getPlayerCharacter().setState('walk-up');
     }
     else if(keys.indexOf('right') != -1) {
-        this.characterSpriteAnimator.walk('right');
+        this.scene.getPlayerCharacter().setState('walk-right');
     }
     else if(keys.indexOf('down') != -1) {
-        this.characterSpriteAnimator.walk('down');
+        this.scene.getPlayerCharacter().setState('walk-down');
     }
 }
