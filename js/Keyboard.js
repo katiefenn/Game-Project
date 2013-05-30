@@ -21,14 +21,13 @@ Keyboard.prototype.listen = function (keys) {
         }
     });
 
-    setInterval(function () {
-        stats.begin();
+    (function animloop(){
+        requestAnimationFrame(animloop);
         if (This.keyBuffer.length > 0) {
             This.notify();
             This.keyBuffer.length = 0;
         }
-        stats.end();
-    }, 1000 / 30);
+    })();
 };
 
 Keyboard.prototype.handleKeyEvent = function (event) {

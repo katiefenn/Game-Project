@@ -1,6 +1,6 @@
 function Game (options) {
     this.settings = jQuery.extend({}, defaults, options);
-    this.display = new Display();
+    this.display = new EaselDisplay();
     this.controllers = [];
 
     var keyboard = new Keyboard;

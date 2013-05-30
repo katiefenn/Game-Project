@@ -18,14 +18,14 @@ DemoModule.prototype.run = function () {
             playerCharacter = new Character(characterConfig[0]),
             scene = new Scene(
                 new Locale(localeConfig[0]), 
-                [
-                    playerCharacter
-                ]
+                {
+                    'player-character': playerCharacter
+                }
             );
 
         var characterController = new CharacterController(scene, new CharacterSpriteAnimator('player-character', This.display));
         This.controllers[0].addObserver(characterController);
 
-        This.display.displayScene(scene);
+        This.display.runScene(scene);
     });
 }

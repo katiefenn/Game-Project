@@ -5,16 +5,16 @@ describe("A LocaleConfigLoader loads JSON Locale config files and", function () 
             localeConfigLoader = new LocaleConfigLoader();
 
         runs(function () {
-            localeConfigLoader.load('kakariko-village', callback);
+            localeConfigLoader.load('churchyard', callback);
         });
 
         waitsFor(function () {
+            console.log(callback.calls);
             return callback.calls.length > 0;
         }, "the loaded config to be returned", 1000);
 
         runs(function () {
             expect(callback).toHaveBeenCalled();
-            expect(Object.prototype.toString.call(callback.calls[0].args[0].spriteConfig)).toEqual('[object Array]');
         });
     });
 });
