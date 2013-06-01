@@ -47,12 +47,10 @@ define(
         };
 
         EaselDisplay.prototype.startScene = function () {
-            for(sprite in this.sprites) {
-                if(this.sprites.hasOwnProperty(sprite)) {
-                    this.sprites[sprite].gotoAndPlay('idle');
-                    this.stage.addChild(this.sprites[sprite]);            
-                }
-            }
+            _.each(this.sprites, function (sprite) {
+                sprite.gotoAndPlay('idle');
+                this.stage.addChild(sprite);
+            }, this);
 
             createjs.Ticker.setFPS(40);
             var This = this;
