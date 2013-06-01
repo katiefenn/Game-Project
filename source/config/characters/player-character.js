@@ -1,7 +1,5 @@
 define(function () {
-
-    var config = {
-        "spritesheets": {
+    var spritesheets = {
             "player-character": {
                 "animations": {
                     "up": {
@@ -45,9 +43,11 @@ define(function () {
                     [150, 2, 16, 22, 0, 0, 0]
                 ]
             }
-        },
+        };
+
+    var config = {
         "sprites": [
-            {"name": "player-character", "spritesheet": "player-character", "properties": {"scaleX": 2, "scaleY": 2}}
+            {"name": "player-character", "spritesheet": spritesheets["player-character"], "properties": {"scaleX": 2, "scaleY": 2}}
         ]
     }
 

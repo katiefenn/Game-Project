@@ -1,7 +1,7 @@
 define(
     'EaselDisplay',
-    ['easel', 'preload'],
-    function (createjs, preload) {
+    ['underscore', 'easel', 'preload'],
+    function (_, createjs, preload) {
         function EaselDisplay () {
             this.stage = new createjs.Stage(document.getElementById('canvas'));
             this.state = 'stopped';
@@ -11,30 +11,28 @@ define(
         EaselDisplay.prototype.runScene = function (scene) {
             this.currentScene = scene;
             var This = this;
-            this.loadSprites(scene.getSpritesheetConfig(), scene.getSpriteConfig(), function () {
+            this.loadSprites(scene.getSpriteConfig(), function () {
                 This.startScene();
             });
         };
 
-        EaselDisplay.prototype.loadSprites = function (spritesheetConfig, spriteConfig, onComplete) {
+        EaselDisplay.prototype.loadSprites = function (config, onComplete) {
             var manifest = [],
                 assets = [];
 
-            spriteConfig.forEach(function(spriteConfigItem) {
-                var spriteSheet = new createjs.SpriteSheet(spritesheetConfig[spriteConfigItem.spritesheet]),
-                    sprite = new createjs.BitmapAnimation(spriteSheet);
+            _.each(config, function (configItem, name) {
+                var spritesheet = new createjs.SpriteSheet(configItem.spritesheet),
+                    sprite = new createjs.BitmapAnimation(spritesheet);
 
                 // Set sprite properties - x, y, scale etc
-                for(propertyName in spriteConfigItem.properties) {
-                    if(spriteConfigItem.properties.hasOwnProperty(propertyName)) {
-                        sprite[propertyName] = spriteConfigItem.properties[propertyName];
-                    }
-                }
+                _.each(configItem.properties, function (property, propertyName) {
+                    sprite[propertyName] = property;
+                }, this);
 
-                this.sprites[spriteConfigItem.name] = sprite;
+                this.sprites[name] = sprite;
 
                 // Add image to loader manifiest - not expecting sprites with > 1 image
-                manifest.push({src: spritesheetConfig[spriteConfigItem.spritesheet].images[0], id: spriteConfigItem.name});
+                manifest.push({src: configItem.spritesheet.images[0], id: configItem.name});
             }, this);
 
             // Load sprite images
