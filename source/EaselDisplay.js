@@ -20,7 +20,7 @@ define(
             var manifest = [],
                 assets = [];
 
-            _.each(config, function (configItem, name) {
+            _.each(config, function (configItem) {
                 var spritesheet = new createjs.SpriteSheet(configItem.spritesheet),
                     sprite = new createjs.BitmapAnimation(spritesheet);
 
@@ -29,7 +29,7 @@ define(
                     sprite[propertyName] = property;
                 }, this);
 
-                this.sprites[name] = sprite;
+                this.sprites[configItem.name] = sprite;
 
                 // Add image to loader manifiest - not expecting sprites with > 1 image
                 manifest.push({src: configItem.spritesheet.images[0], id: configItem.name});
