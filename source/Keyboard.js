@@ -1,7 +1,7 @@
 define(
     'Keyboard',
-    ['ObserverList'],
-    function (ObserverList) {
+    [],
+    function () {
 
         function Keyboard () {
             this.keys = [];
