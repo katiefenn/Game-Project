@@ -1,0 +1,30 @@
+{
+    "spriteConfig":
+    [
+        {
+            "name": "world",
+            "imagePath": "img/kakariko_village.png",
+            "x": 0,
+            "y": 0,
+            "layer": "background"
+            "animations": 
+            {
+                "down": 
+                [
+                    {
+                        "x": 0,
+                        "y": 0,
+                        "width": 1024,
+                        "height": 1024
+                    }
+                ]
+            },
+            "animation": "down",
+            "scale": [2, 2]
+        }
+    ],
+    "clipConfig":
+    [ 
+        [896, 688, 1024, 688, 1024, 736, 928, 736, 928, 832, 896, 832]
+    ]
+}
