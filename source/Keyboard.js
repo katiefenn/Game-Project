@@ -11,7 +11,7 @@ define(
                 right: [39],
                 down: [40]
             };
-            this.observers = new ObserverList();
+            this.observers = [];
             this.keyBuffer = [];
         };
 
@@ -48,18 +48,14 @@ define(
         };
 
         Keyboard.prototype.addObserver = function (observer) {
-            this.observers.add(observer);
-        };
-
-        Keyboard.prototype.removeObserver = function (observer) {
-            this.observers.removeAtIndex(this.observers.indexOf(observer, 0));
+            this.observers.push(observer);
         };
 
         Keyboard.prototype.notify = function () {
             if (this.keyBuffer.length > 0) {
-                for (var observerIndex = 0; observerIndex < this.observers.count(); observerIndex++) {
-                    this.observers.get(observerIndex).update(this.keyBuffer);
-                }
+                _.each(this.observers, function (observer) {
+                    observer.update(this.keyBuffer);
+                }, this);
             }
         };
 
