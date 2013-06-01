@@ -1,13 +1,11 @@
 define(
     'DemoModule',
     [
-        'Loader', 'LoadChainer', 'LocaleConfigLoader', 'CharacterConfigLoader',
         'Character', 'Scene', 'Locale', 'CharacterController',
         'CharacterSpriteAnimator', 'config/locales/churchyard',
         'config/characters/player-character'
     ],
     function (
-        Loader, LoadChainer, LocaleConfigLoader, CharacterConfigLoader,
         Character, Scene, Locale, CharacterController,
         CharacterSpriteAnimator, localeConfig, characterConfig
     ) {
