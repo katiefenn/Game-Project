@@ -3,12 +3,13 @@ define(
     [
         'Loader', 'LoadChainer', 'LocaleConfigLoader', 'CharacterConfigLoader',
         'Character', 'Scene', 'Locale', 'CharacterController',
-        'CharacterSpriteAnimator'
+        'CharacterSpriteAnimator', 'config/locales/churchyard',
+        'config/characters/player-character'
     ],
     function (
         Loader, LoadChainer, LocaleConfigLoader, CharacterConfigLoader,
         Character, Scene, Locale, CharacterController,
-        CharacterSpriteAnimator
+        CharacterSpriteAnimator, localeConfig, characterConfig
     ) {
         function DemoModule (display, controllers) {
             this.display = display;
@@ -16,30 +17,18 @@ define(
         }
 
         DemoModule.prototype.run = function () {
-            var loader = new Loader(),
-                This = this,
-                loadChainer = new LoadChainer(),
-                resourcesToLoad = [
-                    {resources: ['churchyard'], loader: new LocaleConfigLoader()},
-                    {resources: ['player-character'], loader: new CharacterConfigLoader()}
-                ];
+            var playerCharacter = new Character(characterConfig),
+                scene = new Scene(
+                    new Locale(localeConfig), 
+                    {
+                        'player-character': playerCharacter
+                    }
+                );
 
-            loadChainer.load(resourcesToLoad, function (resources) {
-                var localeConfig = resources[0],
-                    characterConfig = resources[1],
-                    playerCharacter = new Character(characterConfig[0]),
-                    scene = new Scene(
-                        new Locale(localeConfig[0]), 
-                        {
-                            'player-character': playerCharacter
-                        }
-                    );
+            var characterController = new CharacterController(scene, new CharacterSpriteAnimator('player-character', this.display));
+            this.controllers[0].addObserver(characterController);
 
-                var characterController = new CharacterController(scene, new CharacterSpriteAnimator('player-character', This.display));
-                This.controllers[0].addObserver(characterController);
-
-                This.display.runScene(scene);
-            });
+            this.display.runScene(scene);
         }
 
         return DemoModule;
