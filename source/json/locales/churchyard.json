@@ -6,8 +6,8 @@
         }
     ],
     "spritesheets": {
-        "grass": {"animations": {"idle": {"frames": [0]}},"images": ["img/grass.png"],"frames": [[0, 0, 40, 73, 0, 0, 0]]},
-        "church": {"animations": {"idle": {"frames": [0]}},"images": ["img/church.png"],"frames": [[0, 0, 218, 315, 0, 0, 0]]}
+        "grass": {"animations": {"idle": {"frames": [0]}},"images": ["source/img/grass.png"],"frames": [[0, 0, 40, 73, 0, 0, 0]]},
+        "church": {"animations": {"idle": {"frames": [0]}},"images": ["source/img/church.png"],"frames": [[0, 0, 218, 315, 0, 0, 0]]}
     },
     "sprites": [
         {"name": "grass1", "spritesheet": "grass", "properties": {"x": 0, "y": 0, "scaleX": 2, "scaleY": 2}},
