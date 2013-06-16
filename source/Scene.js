@@ -1,7 +1,7 @@
 define(
     'Scene',
-    [],
-    function () {
+    ['underscore'],
+    function (_) {
         function Scene (locale, characters, scripts) {
             this.locale = locale;
             this.characters = characters;
@@ -10,27 +10,25 @@ define(
 
         Scene.prototype.getSpriteConfig = function () {
             var spriteConfig = [];
-            if (this.locale.spriteConfig.sprites.length > 0) {
+            if(this.locale.spriteConfig.sprites.length > 0) {
                 spriteConfig = spriteConfig.concat(this.locale.spriteConfig.sprites);
             }
 
-            for(character in this.characters) {
-                if(this.characters.hasOwnProperty(character)) {
-                    spriteConfig = spriteConfig.concat(this.characters[character]['spriteConfig']['sprites']);
-                }
-            }
+            _.each(this.characters, function (character) {
+                spriteConfig = spriteConfig.concat(character['spriteConfig']['sprites']);
+            }, this);
 
             return spriteConfig;
         }
 
         Scene.prototype.getCharacter = function(name) {
-            if(typeof this.characters['name'] != 'undefined') {
+            if(!_.isUndefined(this.characters['name'])) {
                 return this.characters[name];
             }
         };
 
         Scene.prototype.getPlayerCharacter = function() {
-            if(typeof this.characters['player-character'] != 'undefined') {
+            if(!_.isUndefined(this.characters['player-character'])) {
                 return this.characters['player-character'];
             }
         }

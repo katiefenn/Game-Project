@@ -14,7 +14,7 @@ define(
 
             var defaults = {};
 
-            if (typeof this.settings.module == 'undefined') {
+            if (_.isUndefined(this.settings.module)) {
                 this.settings.module = new DemoModule(this.display, this.controllers);
             }
 
