@@ -9,7 +9,7 @@ define(
         CharacterController.prototype.listenTo = function(subject) {
             this.scene = subject;
             this.keyboard = new Keyboard();
-            this.keyboard.listen(37, 38, 39, 40, 32);
+            this.keyboard.listen();
             this.keyboard.addObserver(this);
         };
 

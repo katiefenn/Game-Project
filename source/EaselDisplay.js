@@ -4,32 +4,19 @@ define(
     function (_, createjs, preload) {
         function EaselDisplay () {
             this.stage = new createjs.Stage(document.getElementById('canvas'));
-            this.state = 'stopped';
             this.sprites = {};
         }
 
         EaselDisplay.prototype.runScene = function (scene) {
             this.currentScene = scene;
-            var This = this;
-            this.loadSprites(scene.getSpriteConfig(), function () {
-                This.startScene();
-            });
+            this.loadSprites(scene.getSpriteConfig(), this.startScene, this);
         };
 
-        EaselDisplay.prototype.loadSprites = function (config, onComplete) {
-            var manifest = [],
-                assets = [];
+        EaselDisplay.prototype.loadSprites = function (config, onComplete, context) {
+            var manifest = [];
 
             _.each(config, function (configItem) {
-                var spritesheet = new createjs.SpriteSheet(configItem.spritesheet),
-                    sprite = new createjs.BitmapAnimation(spritesheet);
-
-                // Set sprite properties - x, y, scale etc
-                _.each(configItem.properties, function (property, propertyName) {
-                    sprite[propertyName] = property;
-                }, this);
-
-                this.sprites[configItem.name] = sprite;
+                this.sprites[configItem.name] = createSprite(configItem);
 
                 // Add image to loader manifiest - not expecting sprites with > 1 image
                 manifest.push({src: configItem.spritesheet.images[0], id: configItem.name});
@@ -37,13 +24,14 @@ define(
 
             // Load sprite images
             loader = new preload.LoadQueue(false);
-            loader.onFileLoad = function(event) {
-                assets.push(event.item);
-            };
             loader.onComplete = function() {
-                onComplete();
+                onComplete.call(context);
             };
             loader.loadManifest(manifest);
+        };
+
+        EaselDisplay.prototype.getSprite = function(name) {
+            return this.sprites[name];
         };
 
         EaselDisplay.prototype.startScene = function () {
@@ -55,33 +43,26 @@ define(
             createjs.Ticker.setFPS(30);
             var This = this;
             createjs.Ticker.addEventListener("tick", function() {
-                This.update();
+                updateSprites(This.sprites, This.getCurrentScene());
+                This.stage.update();
             });
-            
-            this.state = "running";
-        };
-
-        EaselDisplay.prototype.update = function() {
-            _.each(this.getCurrentScene().getCharacters(), function(characterName) {
-                updateCharacter(this.sprites, this.getCurrentScene().getCharacter(characterName));
-            }, this);
-
-            _.each(this.getCurrentScene().getSetPieces(), function(setPieceName) {
-                updateSetPiece(this.sprites, this.getCurrentScene().getSetPiece(setPieceName));
-            }, this);
-
-            this.stage.update();
         };
 
         EaselDisplay.prototype.getCurrentScene = function() {
             return this.currentScene;
         };
 
-        EaselDisplay.prototype.isRunning = function() {
-            return this.state == 'running';
+        function updateSprites(sprites, scene) {
+            _.each(scene.getCharacters(), function(characterName) {
+                updateCharacterSprite(sprites, scene.getCharacter(characterName));
+            });
+
+            _.each(scene.getSetPieces(), function(setPieceName) {
+                updateSetPieceSprite(sprites, scene.getSetPiece(setPieceName));
+            });
         };
 
-        function updateCharacter(sprites, character) {
+        function updateCharacterSprite(sprites, character) {
             _.each(character.getSprites(), function (spriteName) {
                 sprites[spriteName].x = character.x;
                 sprites[spriteName].y = character.y;
@@ -92,12 +73,24 @@ define(
             });
         }
 
-        function updateSetPiece(sprites, setPiece) {
+        function updateSetPieceSprite(sprites, setPiece) {
             _.each(setPiece.getSprites(), function (spriteName) {
                 if(sprites[spriteName].currentAnimation != setPiece.state) {
                     sprites[spriteName].gotoAndPlay(setPiece.state);
                 }
             });
+        }
+
+        function createSprite(config) {
+            var spritesheet = new createjs.SpriteSheet(config.spritesheet),
+                sprite = new createjs.BitmapAnimation(spritesheet);
+
+            // Set sprite properties - x, y, scale etc
+            _.each(config.properties, function (property, propertyName) {
+                sprite[propertyName] = property;
+            }, this);
+
+            return sprite;
         }
 
         return EaselDisplay;

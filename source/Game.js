@@ -12,8 +12,6 @@ define(
             if (_.isUndefined(this.settings.module)) {
                 this.settings.module = new DemoModule(this.display);
             }
-
-            this.started = false;
         }
 
         Game.prototype.start = function() {

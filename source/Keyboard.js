@@ -5,13 +5,6 @@ define(
 
         function Keyboard () {
             this.keys = [];
-            this.keyMappings = {
-                left: [37],
-                up: [38],
-                right: [39],
-                down: [40],
-                action: [32]
-            };
 
             this.keyMappings = [];
             this.keyMappings[37] = 'left';
@@ -22,42 +15,41 @@ define(
 
             this.observers = [];
             this.keyBuffer = [];
+            this.captureRate = 30;
         }
 
-        Keyboard.prototype.listen = function (keys) {
-            this.keys = keys;
+        Keyboard.prototype.listen = function () {
             var This = this;
 
-            jQuery(document).bind('keydown', function (event) {
+            document.addEventListener('keydown', function(event) {
                 event.preventDefault();
                 This.handleKeydownEvent(event);
             });
 
-            jQuery(document).bind('keyup', function (event) {
+            document.addEventListener('keyup', function(event) {
                 event.preventDefault();
                 This.handleKeyupEvent(event);
             });
 
-            (function animloop(){
+            (function captureLoop(){
                 setTimeout(function () {
-                    requestAnimationFrame(animloop);
+                    requestAnimationFrame(captureLoop);
                     This.notify();
-                    //This.keyBuffer.length = 0;
-                }, 1000 / 30);
+                }, 1000 / (This.captureRate));
             })();
         };
 
         Keyboard.prototype.handleKeydownEvent = function (event) {
-            if (!_.isUndefined(this.keyMappings[event.keyCode])) {
-                if (!_.contains(this.keyBuffer, this.keyMappings[event.keyCode])) {
-                    this.keyBuffer.push(this.keyMappings[event.keyCode]);
+            if (!_.isUndefined(this.keyMappings[event.which])) {
+                if (!_.contains(this.keyBuffer, this.keyMappings[event.which])) {
+                    this.keyBuffer.push(this.keyMappings[event.which]);
                 }
             }
         };
 
         Keyboard.prototype.handleKeyupEvent = function(event) {
-            if (!_.isUndefined(this.keyMappings[event.keyCode])) {
-                var keyMapping = this.keyMappings[event.keyCode];
+            if (!_.isUndefined(this.keyMappings[event.which])) {
+                var keyMapping = this.keyMappings[event.which];
                 if (_.contains(this.keyBuffer, keyMapping)) {
                     this.keyBuffer.splice(this.keyBuffer.indexOf(keyMapping));
                 }
