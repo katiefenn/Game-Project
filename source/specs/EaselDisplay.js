@@ -3,7 +3,7 @@ describe("EaselDisplay", function () {
         sprite = {"name": "player-character", "spriteConfig": {"animations": {
             "up": {"frames": [0]}}, "images":
             ["img/player-character.png"], "frames": [[122, 122, 16, 22, 0, 0, 0]]}},
-        scene = new Scene({}, [sprite], {}};
+        scene = new Scene({}, [sprite], {});
 
     it("should run a scene", function () {
 

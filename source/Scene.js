@@ -19,7 +19,7 @@ define(
 
         Scene.prototype.getSpriteConfig = function () {
             return this.spriteConfig;
-        }
+        };
 
         Scene.prototype.getCharacters = function() {
             return _.keys(this.characters);
@@ -54,7 +54,7 @@ define(
 
         Scene.prototype.getSetPieces = function() {
             return _.keys(this.setPieces);
-        }
+        };
 
         Scene.prototype.getSetPiece = function(name) {
             return this.setPieces[name];

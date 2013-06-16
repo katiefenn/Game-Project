@@ -41,7 +41,7 @@ define(
             var scene = new Scene(setPieces, characters, spriteConfig, scripts);
 
             this.display.runScene(scene);
-        }
+        };
 
         return DemoModule;
     }

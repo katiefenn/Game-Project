@@ -22,7 +22,7 @@ define(
 
             this.observers = [];
             this.keyBuffer = [];
-        };
+        }
 
         Keyboard.prototype.listen = function (keys) {
             this.keys = keys;

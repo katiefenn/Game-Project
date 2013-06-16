@@ -54,7 +54,7 @@ define(function () {
         "sprites": [
             {"name": "player-character", "spritesheet": spritesheets["player-character"], "properties": {"scaleX": 2, "scaleY": 2}}
         ]
-    }
+    };
 
     return config;
 });
