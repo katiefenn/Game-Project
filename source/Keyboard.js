@@ -9,8 +9,17 @@ define(
                 left: [37],
                 up: [38],
                 right: [39],
-                down: [40]
+                down: [40],
+                action: [32]
             };
+
+            this.keyMappings = [];
+            this.keyMappings[37] = 'left';
+            this.keyMappings[38] = 'up';
+            this.keyMappings[39] = 'right';
+            this.keyMappings[40] = 'down';
+            this.keyMappings[32] = 'action';
+
             this.observers = [];
             this.keyBuffer = [];
         };
@@ -20,29 +29,37 @@ define(
             var This = this;
 
             jQuery(document).bind('keydown', function (event) {
-                if (This.keys.indexOf(event.keyCode) != -1) {
-                    event.preventDefault();
-                    This.handleKeyEvent(event);
-                }
+                event.preventDefault();
+                This.handleKeydownEvent(event);
+            });
+
+            jQuery(document).bind('keyup', function (event) {
+                event.preventDefault();
+                This.handleKeyupEvent(event);
             });
 
             (function animloop(){
-                requestAnimationFrame(animloop);
-                if (This.keyBuffer.length > 0) {
+                setTimeout(function () {
+                    requestAnimationFrame(animloop);
                     This.notify();
-                    This.keyBuffer.length = 0;
-                }
+                    //This.keyBuffer.length = 0;
+                }, 1000 / 30);
             })();
         };
 
-        Keyboard.prototype.handleKeyEvent = function (event) {
-            var keyMapping = {};
+        Keyboard.prototype.handleKeydownEvent = function (event) {
+            if (!_.isUndefined(this.keyMappings[event.keyCode])) {
+                if (!_.contains(this.keyBuffer, this.keyMappings[event.keyCode])) {
+                    this.keyBuffer.push(this.keyMappings[event.keyCode]);
+                }
+            }
+        };
 
-            for (keyMapping in this.keyMappings) {
-                if (this.keyMappings[keyMapping].indexOf(event.keyCode) != -1) {
-                    if (this.keyBuffer.indexOf(keyMapping) == -1) {
-                        this.keyBuffer.push(keyMapping);
-                    }
+        Keyboard.prototype.handleKeyupEvent = function(event) {
+            if (!_.isUndefined(this.keyMappings[event.keyCode])) {
+                var keyMapping = this.keyMappings[event.keyCode];
+                if (_.contains(this.keyBuffer, keyMapping)) {
+                    this.keyBuffer.splice(this.keyBuffer.indexOf(keyMapping));
                 }
             }
         };
@@ -52,11 +69,9 @@ define(
         };
 
         Keyboard.prototype.notify = function () {
-            if (this.keyBuffer.length > 0) {
-                _.each(this.observers, function (observer) {
-                    observer.update(this.keyBuffer);
-                }, this);
-            }
+            _.each(this.observers, function (observer) {
+                observer.update(this.keyBuffer);
+            }, this);
         };
 
         return Keyboard;
