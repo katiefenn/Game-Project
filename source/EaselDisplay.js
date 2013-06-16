@@ -52,13 +52,25 @@ define(
                 this.stage.addChild(sprite);
             }, this);
 
-            createjs.Ticker.setFPS(40);
+            createjs.Ticker.setFPS(30);
             var This = this;
             createjs.Ticker.addEventListener("tick", function() {
-                This.stage.update();
+                This.update();
             });
             
             this.state = "running";
+        };
+
+        EaselDisplay.prototype.update = function() {
+            _.each(this.getCurrentScene().getCharacters(), function(characterName) {
+                updateCharacter(this.sprites, this.getCurrentScene().getCharacter(characterName));
+            }, this);
+
+            _.each(this.getCurrentScene().getSetPieces(), function(setPieceName) {
+                updateSetPiece(this.sprites, this.getCurrentScene().getSetPiece(setPieceName));
+            }, this);
+
+            this.stage.update();
         };
 
         EaselDisplay.prototype.getCurrentScene = function() {
@@ -68,6 +80,25 @@ define(
         EaselDisplay.prototype.isRunning = function() {
             return this.state == 'running';
         };
+
+        function updateCharacter(sprites, character) {
+            _.each(character.getSprites(), function (spriteName) {
+                sprites[spriteName].x = character.x;
+                sprites[spriteName].y = character.y;
+
+                if(sprites[spriteName].currentAnimation != character.state) {
+                    sprites[spriteName].gotoAndPlay(character.state);
+                }
+            });
+        }
+
+        function updateSetPiece(sprites, setPiece) {
+            _.each(setPiece.getSprites(), function (spriteName) {
+                if(sprites[spriteName].currentAnimation != setPiece.state) {
+                    sprites[spriteName].gotoAndPlay(setPiece.state);
+                }
+            });
+        }
 
         return EaselDisplay;
     }
