@@ -3,7 +3,7 @@ define(
     ['Keyboard'],
     function (Keyboard) {
         function CharacterController (subject) {
-
+            this.face = 'down';
         }
 
         CharacterController.prototype.listenTo = function(subject) {
@@ -17,11 +17,14 @@ define(
             _.each(keys, function(key) {
                 if(_.has(handlers, key)) {
                     handlers[key](this.scene);
+                    if(['up', 'right', 'down', 'left'].indexOf(key) != -1) {
+                        this.face = key;
+                    }
                 }
             }, this);
 
             if(keys.length === 0) {
-                this.scene.changeCharacterState('player-character', 'idle');
+                this.scene.changeCharacterState('player-character', 'idle-' + this.face);
             }
         };
 

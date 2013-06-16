@@ -15,12 +15,28 @@ define(function () {
                         "next": "walk-down"
                     },
                     "walk-left": {
-                        "frames": [20],
+                        "frames": [20, 20, 21, 21, 21, 22, 22, 22, 23, 22],
                         "next": "walk-left"
                     },
                     "idle": {
                         "frames": [12],
                         "next": "idle"
+                    },
+                    "idle-up": {
+                        "frames": [0],
+                        "next": "idle-up"
+                    },
+                    "idle-right": {
+                        "frames": [8],
+                        "next": "idle-right"
+                    },
+                    "idle-down": {
+                        "frames": [12],
+                        "next": "idle-down"
+                    },
+                    "idle-left": {
+                        "frames": [20],
+                        "next": "idle-left"
                     }
                 },
                 "images": ["source/img/player-character.png"],
@@ -45,7 +61,10 @@ define(function () {
                     [33, 33, 16, 22, 0, 0, 0],
                     [63, 33, 16, 22, 0, 0, 0],
                     [93, 33, 16, 22, 0, 0, 0],
-                    [150, 2, 16, 22, 0, 0, 0]
+                    [150, 2, 16, 22, 0, 0, 0],
+                    [241, 32, 20, 23, 0, 0, 0],
+                    [272, 32, 20, 23, 0, 0, 0],
+                    [301, 32, 20, 23, 0, 0, 0]
                 ]
             }
         };
