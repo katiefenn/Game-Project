@@ -14,7 +14,7 @@ define(
             this.display = display;
         }
 
-        DemoModule.prototype.run = function () {
+        DemoModule.prototype.run = function (display) {
             var setPieces = {},
                 characters = {'player-character': new Character(characterConfig)},                
                 spriteConfig = [],
@@ -40,7 +40,7 @@ define(
 
             var scene = new Scene(setPieces, characters, spriteConfig, scripts);
 
-            this.display.runScene(scene);
+            display.runScene(scene);
         };
 
         return DemoModule;

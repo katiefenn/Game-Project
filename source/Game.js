@@ -1,21 +1,18 @@
 define(
     'Game',
-    ['EaselDisplay', 'DemoModule'],
-    function (EaselDisplay, DemoModule) {
+    ['EaselDisplay', 'DemoModule', 'underscore'],
+    function (EaselDisplay, DemoModule, _) {
 
         function Game (options) {
-            this.settings = jQuery.extend({}, defaults, options);
             this.display = new EaselDisplay();
-
-            var defaults = {};
-
-            if (_.isUndefined(this.settings.module)) {
-                this.settings.module = new DemoModule(this.display);
-            }
+            var defaults = {
+                module: new DemoModule()
+            };
+            this.settings = _.extend(defaults, options);
         }
 
         Game.prototype.start = function() {
-            this.settings.module.run();
+            this.settings.module.run(this.display);
         };
 
         return Game;
