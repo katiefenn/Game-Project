@@ -1,13 +1,13 @@
 define(
     'DemoModule',
     [
-        'Character', 'Scene', 'Locale', 'config/scripts/CharacterController',
-        'CharacterSpriteAnimator', 'config/locales/churchyard',
+        'Character', 'Scene', 'config/scripts/CharacterController',
+        'config/locales/churchyard',
         'config/characters/player-character', 'SetPiece'
     ],
     function (
-        Character, Scene, Locale, CharacterController,
-        CharacterSpriteAnimator, localeConfig, characterConfig,
+        Character, Scene, CharacterController,
+        localeConfig, characterConfig,
         SetPiece
     ) {
         function DemoModule (display) {
